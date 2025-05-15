@@ -61,12 +61,13 @@ export default function LoginForm() {
         password: data.password,
       });
 
-      const { token, user } = response.data;
+      const { token, userName } = response.data;
 
       if (token) {
+        console.log(userName)
         localStorage.setItem('token', token);
-        localStorage.setItem('userName', JSON.stringify(user.userName));
-        handleGetInitialsFromName(user.userName);
+        localStorage.setItem('userName', JSON.stringify(userName));
+        handleGetInitialsFromName(userName);
 
         router.push('/dashboard');
       } else {
