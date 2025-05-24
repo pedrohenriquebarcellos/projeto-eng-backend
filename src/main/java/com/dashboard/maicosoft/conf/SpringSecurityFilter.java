@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class SpringSecurityFilter extends OncePerRequestFilter {
@@ -25,12 +26,28 @@ public class SpringSecurityFilter extends OncePerRequestFilter {
     @Autowired
     private UserAuthService userAuthService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    private static final List<String> PUBLIC_ENDPOINTS = List.of(
+            "/auth/login",
+            "/swagger-ui",
+            "/swagger-ui.html",
+            "/h2-console"
+    );
 
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+        throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        boolean isPublic = PUBLIC_ENDPOINTS.stream().anyMatch(path::equalsIgnoreCase);
+        if (isPublic) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String header = request.getHeader("Authorization");
         String token = null;
         String username = null;
-        String header = request.getHeader("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
@@ -41,13 +58,14 @@ public class SpringSecurityFilter extends OncePerRequestFilter {
             UserDetails userDetails = userAuthService.loadUserByUsername(username);
 
             if (authenticationService.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-        filterChain.doFilter(request, response);
 
+        filterChain.doFilter(request, response);
     }
 }

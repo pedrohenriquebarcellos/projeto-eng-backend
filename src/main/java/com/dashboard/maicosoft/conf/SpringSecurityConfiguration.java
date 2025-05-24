@@ -31,9 +31,11 @@ public class SpringSecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authReq -> authReq
-                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/h2/**", "/login").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/h2-console/**", "/auth/login").permitAll()
                         .anyRequest().authenticated()
-                ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
@@ -45,9 +47,9 @@ public class SpringSecurityConfiguration {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*")); // ou liste os headers específicos
-        config.setAllowCredentials(true); // se estiver enviando cookies ou headers Authorization
-        config.setExposedHeaders(List.of("Authorization")); // se for necessário
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+        config.setExposedHeaders(List.of("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

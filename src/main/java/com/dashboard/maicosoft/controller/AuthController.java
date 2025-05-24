@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -33,7 +33,7 @@ public class AuthController {
     private UserAuthService userAuthService;
 
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<UserLoginResponseDTO> authenticateUser(@Valid @RequestBody LoginUserDto loginUserDto) {
 
         var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserDto.userName(), loginUserDto.password()));

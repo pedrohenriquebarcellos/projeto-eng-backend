@@ -1,4 +1,8 @@
 package com.dashboard.maicosoft.dto;
 
-public record LoginUserDto(String userName, String password) {
-}
+import jakarta.validation.constraints.NotBlank;
+
+public record LoginUserDto(
+        @NotBlank String userName,
+        @NotBlank String password
+) {}
