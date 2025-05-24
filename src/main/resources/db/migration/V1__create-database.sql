@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 INSERT INTO users (id, username, password)
-VALUES (1, 'jhon.doe', '$2a$10$uReHnk1Wv6emfqJgJGP23uRD8HssjtxFYjYMwIqv.XmWE5YrShU6.');
+VALUES (1, 'maicon.macedo', '$2a$10$uReHnk1Wv6emfqJgJGP23uRD8HssjtxFYjYMwIqv.XmWE5YrShU6.');
 
 -- user: jhon.doe
 -- pass: 12345
