@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS companies (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     cnpj VARCHAR(14) NOT NULL,
-    company_legal_name VARCHAR(40) NOT NULL,
+    company_legal_name VARCHAR(80) NOT NULL,
     company_address_street VARCHAR(80) NOT NULL,
     company_address_district VARCHAR(40) NOT NULL,
-    company_fantasy_name VARCHAR(20) NOT NULL,
+    company_fantasy_name VARCHAR(80) NOT NULL,
     company_type CHAR(1) NOT NULL,
     company_cep VARCHAR(9) NOT NULL,
     company_state VARCHAR(30) NOT NULL,

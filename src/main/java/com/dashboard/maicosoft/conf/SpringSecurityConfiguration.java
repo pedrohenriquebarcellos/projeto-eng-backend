@@ -31,7 +31,7 @@ public class SpringSecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authReq -> authReq
-                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/h2-console/**", "/auth/login").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/h2-console/**", "/auth/login", "/companies", "/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -18,7 +18,6 @@ public class AuthenticationService {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(DateUtils.addDays(new Date(), 1))
                 .signWith(key)
                 .compact();
     }

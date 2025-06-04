@@ -30,7 +30,9 @@ public class SpringSecurityFilter extends OncePerRequestFilter {
             "/auth/login",
             "/swagger-ui",
             "/swagger-ui.html",
-            "/h2-console"
+            "/h2-console",
+            "/companies",
+            "/register"
     );
 
     @Override
@@ -52,6 +54,8 @@ public class SpringSecurityFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
             username = authenticationService.getUsernameFromToken(token);
+            System.out.println("Token recebido: " + token);
+            System.out.println("Username extraído: " + username);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
